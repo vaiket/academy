@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
       <!-- BUTTON -->
       <div style="text-align:center;margin:32px 0">
-        <a href="https://vaiket.com"
+        <a href="https://academy.vaiket.com"
            style="background:#16a34a;color:#ffffff;text-decoration:none;
                   padding:14px 28px;border-radius:6px;font-weight:600;
                   display:inline-block">
