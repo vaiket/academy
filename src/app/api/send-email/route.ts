@@ -5,9 +5,12 @@ export async function POST(req: Request) {
   try {
     const { name, email } = await req.json();
 
+    const safeName = name || "Student";
+
     const transporter = nodemailer.createTransport({
       host: "smtp-relay.brevo.com",
       port: 587,
+      secure: false,
       auth: {
         user: process.env.BREVO_SMTP_USER,
         pass: process.env.BREVO_SMTP_PASS,
@@ -20,38 +23,58 @@ export async function POST(req: Request) {
       subject: "Application Received – Vaiket Academy Internship",
 
       html: `
-<div style="font-family:Arial,Helvetica,sans-serif;background:#f6f8fb;padding:30px">
+<div style="margin:0;padding:0;background:#f6f8fb;font-family:Arial,Helvetica,sans-serif">
 
-  <div style="max-width:600px;margin:auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05)">
+  <div style="max-width:620px;margin:40px auto;background:#ffffff;border-radius:10px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.06)">
 
     <!-- HEADER -->
-    <div style="background:#16a34a;color:white;padding:18px 24px;font-size:20px;font-weight:bold">
+    <div style="background:#16a34a;padding:22px 28px;color:#ffffff;font-size:22px;font-weight:700">
       Vaiket Academy
     </div>
 
     <!-- BODY -->
-    <div style="padding:24px;color:#333;font-size:15px;line-height:1.6">
+    <div style="padding:28px;color:#333;font-size:15px;line-height:1.7">
 
-      <p>Hello <b>${name}</b>,</p>
+      <p>Hello <b>${safeName}</b>,</p>
 
       <p>
         Thank you for applying to the <b>Vaiket Academy Internship Program</b>.
-        We have successfully received your application.
+        Your application has been successfully received and is now under review.
       </p>
 
       <p>
-        Our team is currently reviewing your profile.
-        If shortlisted, you will receive further instructions shortly.
+        Our team will evaluate your profile within the next 
+        <b>24–48 hours</b>. If shortlisted, you will receive your onboarding steps,
+        internship roadmap, and project guidelines.
       </p>
 
       <p>
-        Please keep an eye on your email and WhatsApp for updates.
+        At Vaiket, we focus on <b>real skills, real projects, and real growth</b>.
+      </p>
+
+      <!-- BUTTON -->
+      <div style="text-align:center;margin:32px 0">
+        <a href="https://vaiket.com"
+           style="background:#16a34a;color:#ffffff;text-decoration:none;
+                  padding:14px 28px;border-radius:6px;font-weight:600;
+                  display:inline-block">
+          Visit Vaiket Academy
+        </a>
+      </div>
+
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:26px 0"/>
+
+      <!-- SUPPORT -->
+      <p style="font-size:14px;color:#555">
+        <b>Need help?</b><br/>
+        📞 WhatsApp / Call: +91 7004614077<br/>
+        📩 Email: hr@vaiket.com
       </p>
 
       <br/>
 
       <p>
-        Best regards,<br/>
+        Warm regards,<br/>
         <b>Vaiket Team</b><br/>
         Vikas Web Development Pvt. Ltd.
       </p>
@@ -59,8 +82,8 @@ export async function POST(req: Request) {
     </div>
 
     <!-- FOOTER -->
-    <div style="background:#f1f5f9;padding:14px 24px;font-size:12px;color:#666;text-align:center">
-      © 2026 Vaiket • Vikas Web Development Pvt. Ltd.
+    <div style="background:#f1f5f9;padding:16px 20px;font-size:12px;color:#666;text-align:center">
+      © 2026 Vaiket • Building Skills. Creating Futures.
     </div>
 
   </div>
@@ -70,8 +93,9 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true });
+
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return NextResponse.json({ success: false });
   }
 }
